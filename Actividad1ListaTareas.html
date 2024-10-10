@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        /* Estilo global para el cuerpo de la página */
+        body {
+            font-family: 'Poppins', sans-serif; /* Fuente moderna y legible */
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5); /* Fondo con un gradiente suave de colores */
+            display: flex; /* Flexbox para centrar el contenido */
+            justify-content: center; /* Centrado horizontal */
+            align-items: center; /* Centrado vertical */
+            height: 100vh; /* Tomamos toda la altura de la pantalla */
+            margin: 0; /* Eliminamos márgenes predeterminados */
+        }
+
+        /* Estilo del encabezado principal */
+        h1 {
+            color: #333; /* Color oscuro para el texto */
+            font-size: 32px; /* Tamaño de fuente más grande */
+            margin-bottom: 20px; /* Espacio debajo del encabezado */
+        }
+
+        /* Contenedor de la aplicación */
+        .container {
+            background-color: white; /* Fondo blanco para la caja */
+            padding: 25px; /* Espaciado interno */
+            border-radius: 15px; /* Bordes redondeados */
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1); /* Sombra sutil para dar profundidad */
+            width: 500px; /* Ancho más amplio para el contenedor */
+            text-align: center; /* Centrado del texto dentro de la caja */
+        }
+
+        /* Estilo para el formulario de entrada horizontal */
+        .form-container {
+            display: flex;
+            justify-content: space-between; /* Espacio entre los elementos */
+            align-items: center; /* Alinea verticalmente los elementos */
+            margin-bottom: 20px; /* Espacio debajo del formulario */
+        }
+
+        /* Estilo para el campo de texto donde se ingresa la tarea */
+        input[type="text"] {
+            width: 75%; /* Ancho del 75% del contenedor */
+            padding: 12px; /* Espaciado interno del campo */
+            border: 1px solid #ddd; /* Borde gris claro */
+            border-radius: 8px; /* Bordes redondeados */
+            margin-right: 10px; /* Espacio entre el campo de texto y el botón */
+            font-size: 16px; /* Tamaño de fuente para los textos */
+            outline: none; /* Quitamos el contorno predeterminado */
+            transition: border-color 0.3s; /* Transición suave al enfocar el campo */
+        }
+
+        /* Cambio de color del borde cuando el campo de texto tiene el foco */
+        input[type="text"]:focus {
+            border-color: #5c6bc0; /* Borde azul al enfocarse */
+        }
+
+        /* Estilo para el botón */
+        button {
+            padding: 12px 20px; /* Espaciado interno del botón */
+            border: none; /* Quitamos el borde del botón */
+            background-color: #5c6bc0; /* Fondo morado */
+            color: white; /* Color del texto en blanco */
+            border-radius: 8px; /* Bordes redondeados */
+            cursor: pointer; /* El cursor se vuelve mano cuando se pasa por encima */
+            font-size: 16px; /* Tamaño de fuente */
+            transition: background-color 0.3s; /* Transición suave de color de fondo */
+            width: 100px; /* Botón más pequeño */
+        }
+
+        /* Estilo cuando el usuario pasa el mouse sobre el botón */
+        button:hover {
+            background-color: #3949ab; /* Fondo más oscuro cuando se pasa el mouse */
+        }
+
+        /* Estilo para la lista de tareas */
+        ul {
+            list-style-type: none; /* Eliminamos los puntos de lista */
+            padding: 0; /* Eliminamos el padding por defecto */
+            margin-top: 20px; /* Espacio superior */
+            max-height: 300px; /* Altura máxima para la lista */
+            overflow-y: auto; /* Permite desplazarse si hay muchas tareas */
+        }
+
+        /* Estilo para cada tarea de la lista */
+        li {
+            background-color: #f9f9f9; /* Fondo gris claro */
+            padding: 12px; /* Espaciado interno */
+            margin: 8px 0; /* Espacio entre tareas */
+            border-radius: 8px; /* Bordes redondeados */
+            display: flex; /* Usamos flexbox para distribuir el contenido */
+            justify-content: space-between; /* Espacio entre el texto de la tarea y el botón */
+            align-items: center; /* Alineamos las tareas verticalmente */
+            transition: background-color 0.3s; /* Transición suave en el color de fondo */
+        }
+
+        /* Estilo para las tareas completadas */
+        li.completed {
+            text-decoration: line-through; /* Tachado para las tareas completadas */
+            color: grey; /* Texto gris */
+            background-color: #e0e0e0; /* Fondo gris para las tareas completadas */
+        }
+
+        /* Estilo al pasar el ratón sobre una tarea */
+        li:hover {
+            background-color: #e0f7fa; /* Fondo ligeramente azul cuando se pasa el ratón */
+        }
+
+        /* Estilo para el botón de eliminar */
+        .eliminar {
+            background-color: #e53935; /* Fondo rojo */
+            padding: 5px 12px; /* Espaciado interno */
+            color: white; /* Texto blanco */
+            border: none; /* Quitamos el borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* El cursor se vuelve mano */
+            transition: background-color 0.3s; /* Transición suave para el color de fondo */
+        }
+
+        /* Estilo cuando el ratón pasa sobre el botón de eliminar */
+        .eliminar:hover {
+            background-color: #d32f2f; /* Fondo rojo más oscuro */
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+        <!-- Contenedor para el formulario de entrada horizontal -->
+        <div class="form-container">
+            <!-- Campo para ingresar una nueva tarea -->
+            <input type="text" id="nuevaTarea" placeholder="Escribe una tarea">
+            <!-- Botón para agregar una tarea -->
+            <button onclick="agregarTarea()">Agregar</button>
+        </div>
+
+        <!-- Lista de tareas -->
+        <ul id="listaTareas"></ul>
+    </div>
+
+    <script>
+        // Array para almacenar las tareas
+        let tareas = [];
+
+        // Función para agregar una tarea a la lista
+        function agregarTarea() {
+            const inputTarea = document.getElementById("nuevaTarea"); // Obtener el campo de texto
+            const tareaTexto = inputTarea.value; // Obtener el valor del campo
+
+            if (tareaTexto !== "") { // Verificamos que la tarea no esté vacía
+                // Agregar la tarea al array
+                tareas.push({ texto: tareaTexto, completada: false });
+
+                // Actualizar la lista de tareas en la pantalla
+                mostrarTareas();
+
+                // Limpiar el campo de texto
+                inputTarea.value = "";
+            } else {
+                alert("Escribe una tarea antes de agregarla."); // Si está vacío, mostrar un mensaje
+            }
+        }
+
+        // Función para mostrar las tareas en el DOM
+        function mostrarTareas() {
+            const listaTareas = document.getElementById("listaTareas"); // Obtener la lista
+            listaTareas.innerHTML = ""; // Limpiar la lista existente
+
+            // Recorrer las tareas y mostrarlas
+            tareas.forEach((tarea, index) => {
+                const li = document.createElement("li"); // Crear un elemento de lista
+                li.textContent = tarea.texto; // Establecer el texto de la tarea
+                li.style.cursor = "pointer"; // Cambiar el cursor al pasar sobre la tarea
+
+                // Si la tarea está completada, aplicarle la clase 'completed'
+                if (tarea.completada) {
+                    li.classList.add("completed");
+                }
+
+                // Evento para marcar la tarea como completada
+                li.onclick = () => {
+                    tareas[index].completada = !tareas[index].completada; // Cambiar el estado de la tarea
+                    mostrarTareas(); // Actualizar la lista
+                };
+
+                // Crear el botón de eliminar
+                const botonEliminar = document.createElement("button");
+                botonEliminar.textContent = "Eliminar"; // Texto del botón
+                botonEliminar.classList.add("eliminar"); // Agregar la clase de estilo
+                botonEliminar.onclick = (e) => {
+                    e.stopPropagation(); // Evitar que se active el evento de marcar como completada
+                    eliminarTarea(index); // Llamar a la función para eliminar la tarea
+                };
+
+                li.appendChild(botonEliminar); // Agregar el botón a la tarea
+                listaTareas.appendChild(li); // Agregar la tarea a la lista
+            });
+        }
+
+        // Función para eliminar una tarea
+        function eliminarTarea(index) {
+            tareas.splice(index, 1); // Eliminar la tarea del array
+            mostrarTareas(); // Actualizar la lista de tareas
+        }
+    </script>
+</body>
+</html>
